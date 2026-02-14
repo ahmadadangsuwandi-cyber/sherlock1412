@@ -1,0 +1,170 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Valentine's Day</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      overflow: hidden;
+    }.container {
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  z-index: 2;
+}
+
+h1 {
+  font-size: 24px;
+  color: white;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 15px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 30px;
+  background-color: #ff2e63;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  transition: 0.3s;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.message {
+  margin-top: 25px;
+  font-size: 18px;
+  color: white;
+  display: none;
+  animation: fadeIn 2s ease forwards;
+}
+
+.photo {
+  margin-top: 20px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.heart {
+  position: absolute;
+  color: #fff;
+  animation: fall linear forwards;
+  font-size: 20px;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>  <div class="container">
+    <h1>Click This Button 💌</h1>
+    <button onclick="showMessage()">Open My Heart</button><div class="message" id="valentineMessage">
+  <h2>Happy Valentine's Day, Arfira Nasywa ❤️</h2>
+  <p>
+    Terima kasih sudah menjadi bagian terindah dalam hidupku 🌹✨<br><br>
+    Semoga hari ini dipenuhi dengan cinta, tawa, dan kebahagiaan.
+    Aku bersyukur bisa berbagi momen indah bersamamu 💖
+  </p>
+  
+  <img src="pic.jpeg" class="photo" alt="Our Photo" />
+</div>
+
+  </div>  <script>
+    function showMessage() {
+      document.getElementById("valentineMessage").style.display = "block";
+      startHearts();
+      startConfetti();
+    }
+
+    function startHearts() {
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 5000);
+      }, 300);
+    }
+
+    function startConfetti() {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const pieces = [];
+      for (let i = 0; i < 150; i++) {
+        pieces.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 6 + 4,
+          d: Math.random() * 50,
+          color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+          tilt: Math.floor(Math.random() * 10) - 10
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          ctx.beginPath();
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x, p.y, p.r, p.r);
+        });
+        update();
+      }
+
+      function update() {
+        pieces.forEach(p => {
+          p.y += Math.cos(p.d) + 2;
+          p.x += Math.sin(0.01);
+
+          if (p.y > canvas.height) {
+            p.y = -10;
+            p.x = Math.random() * canvas.width;
+          }
+        });
+      }
+
+      setInterval(draw, 20);
+    }
+  </script></body>
+</html>
